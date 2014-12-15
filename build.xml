@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Simple Logger" default="makeJar" basedir=".">
+	<description>Simple Logger</description>
+
+	<!-- properties -->
+
+	<!-- project information -->
+
+	<!-- project name -->
+	<property name="projectName" value="Simple Logger" />
+	
+	<!-- project version -->
+	<property name="projectVersion" value="1.6" />
+	
+	<!-- source information -->
+	
+	<!-- filepath of the project -->
+	<property name="projectDirectory" value="." />
+	
+	<!-- source directory, where java files are stored -->
+	<property name="srcDirectory" value="${projectDirectory}/src" />
+	
+	<!-- build directory, where class files are going to be stored -->
+	<property name="binDirectory" value="./bin" />
+
+	<!-- jar file name -->
+	<property name="jarName" value="simple-logger-${projectVersion}.jar" description="final build" />
+	
+	<!-- generated jars location -->
+	<property name="outputJarLocation" value="./dist" />
+	
+	
+	
+	<!-- system environment -->
+	
+	<!-- Pointer to system environment -->
+	<property environment="env" />
+
+	<!-- Pointer to JAVA_HOME system variable -->
+	<property name="javahome" value="${env.JAVA_HOME}" />
+
+	<!-- parameters for javac ANT task -->
+	<property name="source" value="1.5" description="sources level (VM version)" />
+	<property name="target" value="1.5" description="generated classes level (VM version)" />
+	<property name="compiler" value="javac1.5" description="compiler implementation to use" />
+	<!-- <property name="executable" value="C:/Program Files/Java/jdk1.5.0_06/bin/javac" description="complete path to the javac executable to use" /> -->
+	<property name="executable" value="/usr/bin/javac" description="complete path to the javac executable to use" />
+	
+
+
+	<!-- CLASSPATH to be used -->
+	<path id="classes.classpath">
+		<pathelement path="${binDirectory}" />
+	</path>
+
+	<path id="jar.classpath">
+		<pathelement path="${outputJarLocation}/${jarName}" />
+	</path>
+
+
+	<!-- Targets -->
+
+	<!-- 1. Clean project  -->
+	<target name="clean" description="clean class files">
+
+		<echo message="Deleting OLD class files: ${binDirectory}" />
+		<delete quiet="true" dir="${binDirectory}" />
+		<echo message="Deleting OLD jar file: ${outputJarLocation}/${jarName}" />
+		<delete file="${outputJarLocation}/${jarName}" quiet="true" />
+
+	</target>
+
+	<!-- 2. Compile project  -->
+	<target name="compile" depends="clean">
+		<echo message="Building project ..." />
+
+		<mkdir dir="${binDirectory}" />
+		<javac srcdir="${srcDirectory}" destdir="${binDirectory}" source="${source}" target="${target}" compiler="${compiler}" executable="${executable}" debug="true" fork="yes" deprecation="false" encoding="UTF-8" >
+
+			<include name="**/*.java" />
+
+		</javac>
+		<echo message="Project build finished." />
+	</target>
+
+
+	<!-- 3. Make jar file  -->
+	<target name="makeJar" description="produce jar">
+		<!-- internally calls clean -->
+		<antcall target="compile" />
+
+		<echo message="Creating the manifest for the jar file '${jarName}'" />
+
+		<mkdir dir="${projectDirectory}/meta-inf" />
+		<tstamp>
+			<format property="TODAY" pattern="dd.MM.yyyy hh:mm" />
+		</tstamp>
+		<manifest file="${projectDirectory}/meta-inf/Manifest.mf">
+			<attribute name="Manifest-Version" value="1.0" />
+			<attribute name="Creation-Date" value="${TODAY}" />
+			<attribute name="Created-By" value="Matjaz Cerkvenik" />
+			<attribute name="Main-Class" value="" />
+			<attribute name="Content" value="${projectName}" />
+			<attribute name="Project-Version" value="${projectVersion}" />
+			<attribute name="Compiled-By" value="${compiler}" />
+		</manifest>
+
+		<echo message="Creating the jar file:  ${outputJarLocation}/${jarName}" />
+		<mkdir dir="${projectDirectory}/${outputJarLocation}" />
+		<jar basedir="${binDirectory}" compress="true" jarfile="${outputJarLocation}/${jarName}" manifest="${projectDirectory}/meta-inf/Manifest.mf">
+
+			<include name="main/*.class" />
+			<include name="**/*.class" />
+
+		</jar>
+
+		<delete quiet="true" file="${projectDirectory}/meta-inf/Manifest.mf" />
+		<delete quiet="true" dir="${projectDirectory}/meta-inf" />
+		
+	</target>
+
+</project>
