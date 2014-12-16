@@ -13,11 +13,15 @@ public class LogTest {
 	public static void main(String[] args) throws Exception {
 		
 //		startLogger1();
-		startLogger2();
-		startLogger10();
+//		startLogger2();
+//		startLogger10();
+		startLogger30();
 		
 	}
 	
+	/**
+	 * Setup individual parameters
+	 */
 	private static void startLogger1() {
 		
 		SimpleLogger logger = new SimpleLogger();
@@ -34,6 +38,11 @@ public class LogTest {
 		
 	}
 	
+	/**
+	 * Setup via constructor
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	private static void startLogger2() throws FileNotFoundException, IOException {
 		
 		SimpleLogger logger = new SimpleLogger("./test.log");
@@ -46,6 +55,11 @@ public class LogTest {
 		
 	}
 	
+	/**
+	 * Load from properties
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	private static void startLogger10() throws FileNotFoundException, IOException {
 		
 		Properties p = new Properties();
@@ -58,6 +72,15 @@ public class LogTest {
 			t.start();
 		}
 		
+	}
+	
+	/**
+	 * Write into non-existing directory
+	 */
+	private static void startLogger30() {
+		// FIXME NPE!
+		SimpleLogger logger = new SimpleLogger("./test/test.log");
+		logger.info("Hello simple-logger!");
 	}
 	
 }
