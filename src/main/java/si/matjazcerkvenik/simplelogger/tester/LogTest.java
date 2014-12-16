@@ -37,6 +37,7 @@ public class LogTest {
 	private static void startLogger2() throws FileNotFoundException, IOException {
 		
 		SimpleLogger logger = new SimpleLogger("./test.log");
+		logger.info("Hello simple-logger!");
 		
 		for (int i = 0; i < 1; i++) {
 			LogThread t = new LogThread(logger);
