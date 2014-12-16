@@ -1,11 +1,24 @@
 package si.matjazcerkvenik.simplelogger.tester;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
 import si.matjazcerkvenik.simplelogger.LEVEL;
 import si.matjazcerkvenik.simplelogger.SimpleLogger;
 
 public class LogTest {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		
+//		startLogger1();
+		startLogger2();
+		startLogger10();
+		
+	}
+	
+	private static void startLogger1() {
 		
 		SimpleLogger logger = new SimpleLogger();
 		logger.setLogLevel(LEVEL.DEBUG);
@@ -15,6 +28,31 @@ public class LogTest {
 		logger.setBackup(3);
 		
 		for (int i = 0; i < 100; i++) {
+			LogThread t = new LogThread(logger);
+			t.start();
+		}
+		
+	}
+	
+	private static void startLogger2() throws FileNotFoundException, IOException {
+		
+		SimpleLogger logger = new SimpleLogger("./test.log");
+		
+		for (int i = 0; i < 1; i++) {
+			LogThread t = new LogThread(logger);
+			t.start();
+		}
+		
+	}
+	
+	private static void startLogger10() throws FileNotFoundException, IOException {
+		
+		Properties p = new Properties();
+		p.load(new FileInputStream("./simplelogger.properties"));
+		
+		SimpleLogger logger = new SimpleLogger(p);
+		
+		for (int i = 0; i < 3; i++) {
 			LogThread t = new LogThread(logger);
 			t.start();
 		}

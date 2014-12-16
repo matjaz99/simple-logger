@@ -6,7 +6,7 @@ public class LogThread extends Thread {
 	
 	private SimpleLogger logger = null;
 	
-	private String longText = "\tasdfmalkflaknaldkfnasdnfkajsdnkjadsf" +
+	private String longText = "\t\t\tasdfmalkflaknaldkfnasdnfkajsdnkjadsf" +
 			"aljksdnfkajsdnflkajsdnflkajdsfirebfaksjdbfkjasbdf" +
 			"lakjsdfkjadsflkjasdlfkjalskdfjh";
 
