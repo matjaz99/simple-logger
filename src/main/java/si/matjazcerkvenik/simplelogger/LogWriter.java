@@ -150,7 +150,7 @@ public class LogWriter {
 	/**
 	 * Close logger output streams.
 	 */
-	private void closeLogger() {
+	public void closeLogger() {
 		try {
 			out.close();
 			out = null;

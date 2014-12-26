@@ -343,7 +343,12 @@ public class SimpleLogger {
 		this.verbose = verbose;
 	}
 	
-	
+	/**
+	 * Close file writer stream
+	 */
+	public void close() {
+		writer.closeLogger();
+	}
 	
 	
 	
