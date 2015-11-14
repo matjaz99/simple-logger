@@ -39,6 +39,7 @@ public class LogWriter {
 		}
 
 		f = new File(logger.getFilename());
+		f.getParentFile().mkdirs();
 
 		if (f.exists()) {
 			if (logger.isAppend()) {

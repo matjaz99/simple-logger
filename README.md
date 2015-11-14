@@ -35,6 +35,11 @@ simplelogger.dateFormat=yyyy.MM.dd hh:mm:ss:SSS
 
 =============
 
+1.6.2
+- create directories on path if they don't exist
+
+=============
+
 1.6.1
 - close file writer
 

@@ -78,8 +78,7 @@ public class LogTest {
 	 * Write into non-existing directory
 	 */
 	private static void startLogger30() {
-		// FIXME NPE!
-		SimpleLogger logger = new SimpleLogger("./test/test.log");
+		SimpleLogger logger = new SimpleLogger("./test0/test1/test2/test.log");
 		logger.info("Hello simple-logger!");
 	}
 	
