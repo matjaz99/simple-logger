@@ -10,7 +10,7 @@
 	<property name="projectName" value="Simple Logger" />
 	
 	<!-- project version -->
-	<property name="projectVersion" value="1.6.2.beta" />
+	<property name="projectVersion" value="1.6.2" />
 	
 	<!-- source information -->
 	
