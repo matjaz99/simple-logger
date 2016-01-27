@@ -1,5 +1,6 @@
 package si.matjazcerkvenik.simplelogger;
 
+import java.io.Serializable;
 import java.util.Properties;
 
 /**
@@ -15,7 +16,9 @@ import java.util.Properties;
  * @author Matjaz Cerkvenik
  *
  */
-public class SimpleLogger {
+public class SimpleLogger implements Serializable {
+	
+	private static final long serialVersionUID = -6338153904743837043L;
 	
 	/** set to false to start new log */
 	private boolean append = true;
