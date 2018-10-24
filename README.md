@@ -7,7 +7,7 @@ Logger utility for java that is very simple to configure and use.
 
 Add simple-logger-x.y.z.jar to project path (dependency).
 
-Create new SimpleLogger object with filename and start logging:
+Create new SimpleLogger object, set filename and start logging:
 
 ```java
 SimpleLogger logger = new SimpleLogger("./test.log");
@@ -29,26 +29,19 @@ simplelogger.maxBackupFiles=2
 simplelogger.dateFormat=yyyy.MM.dd hh:mm:ss:SSS
 ```
 
-*filename*
-Relative or absolute path to log file.
+*filename* - Relative or absolute path to log file.
 
-*level*
-Log level. Supported log levels: TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+*level* - Log level. Supported log levels: TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 
-*append*
-Set true to append text to file, or false to delete it first.
+*append* - Set true to append text to file, or false to delete it first.
 
-*verbose*
-Also send text to standard output (console).
+*verbose* - Also send text to standard output (console).
 
-*maxFileSize*
-Maximum size of log file in megabytes.
+*maxFileSize* - Maximum size of log file in megabytes.
 
-*maxBackupFiles*
-Number of rolling files. Active log file has suffix .log while older log files get suffix .log.1. When new log file is created, the index of old log files are shifted and the last file is deleted.
+*maxBackupFiles* - Number of rolling files. Active log file has suffix .log while older log files get suffix .log.1. When new log file is created, the index of old log files are shifted and the last file is deleted.
 
-*dateFormat*
-Date format in Java compatible syntax, for example:
+*dateFormat* - Date format in Java compatible syntax, for example:
 - yyyy.MM.dd hh:mm:ss:SSS
 - EEE, MMM d, yy
 - h:mm a
@@ -56,7 +49,7 @@ Date format in Java compatible syntax, for example:
 
 
 
-Load the properties in Java:
+Load the properties into SimpleLogger and start logging:
 
 ```java
 Properties p = new Properties();
@@ -75,7 +68,7 @@ All configuration can be done in the code. There are setters for all parameters:
 ```java
 SimpleLogger logger = new SimpleLogger();
 
-logger.setFilename(String filename)
+logger.setFilename("./simplelogger.properties")
 logger.setAppend(true);
 logger.setLogLevel(LEVEL.INFO)
 logger.setDateFormat("yyyy.MM.dd hh:mm:ss:SSS");
