@@ -3,6 +3,14 @@ simple-logger
 
 Logger utility for java that is very simple to configure and use.
 
+Last stable release: 1.6.4. Find it in the dist directory.
+
+##### Project
+
+Build with maven, ant is only for legacy.
+Releases are stored in dist directory.
+
+### Usage
 ---
 
 Add simple-logger-x.y.z.jar to project path (dependency).
@@ -17,7 +25,7 @@ logger.info("Hello simple-logger!");
 ### Configuration
 ---
 
-Configure simple-logger with simplelogger.properties file:
+Configure simple-logger with *simplelogger.properties* file:
 
 ```
 simplelogger.filename=./simple-logger.log
@@ -79,23 +87,46 @@ logger.setBackup(5);
 logger.info("Hello simple-logger!");
 ```
 
+### Just plain text
+---
 
+Use write(text) method to write just plain text without date, time and log level.
+
+```java
+logger.write("Just some text");
+```
+
+
+### Logging exceptions
+---
+
+All methods provide additional throwable argument to print exception stack.
+
+```java
+logger.error("Exception is thrown: ", e);
+```
 
 ---
 
 ### Version history
 
+
+1.6.4
+- Added write(text) method where the text is written to log file without checking log level. Date and log level is also not printed. Just text.
+
+---
+
 1.6.3
 - SimpleLogger implements Serializable
 
-=============
+---
 
 1.6.2
 - create directories on path if they don't exist
 
-=============
+---
 
 1.6.1
 - close file writer
 
-MC
+...

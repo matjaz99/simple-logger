@@ -12,10 +12,10 @@ public class LogTest {
 	
 	public static void main(String[] args) throws Exception {
 		
-//		startLogger1();
+		startLogger1();
 //		startLogger2();
 //		startLogger10();
-		startLogger30();
+//		startLogger30();
 		
 	}
 	
@@ -25,13 +25,16 @@ public class LogTest {
 	private static void startLogger1() {
 		
 		SimpleLogger logger = new SimpleLogger();
-		logger.setLogLevel(LEVEL.DEBUG);
+		logger.setLogLevel(LEVEL.INFO);
 		logger.setFilename("/Users/matjaz/Desktop/simple-logger.log");
 //		logger.setFilename("D:\\aaaaaaaa\\testlog.log");
 		logger.setMaxSizeMb(2);
 		logger.setBackup(3);
+		logger.setDateFormat(null);
+		logger.setVerbose(true);
+		logger.setAppend(false);
 		
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10; i++) {
 			LogThread t = new LogThread(logger);
 			t.start();
 		}

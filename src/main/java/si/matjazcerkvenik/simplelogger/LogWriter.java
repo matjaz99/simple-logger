@@ -45,17 +45,13 @@ public class LogWriter {
 			if (logger.isAppend()) {
 				System.out.println("[SimpleLogger] Append output to: " + logger.getFilename());
 			} else {
-//				System.out.println("Overriding output file: "
-//						+ logger.getFilename());
+				System.out.println("[SimpleLogger] Overriding output file: " + logger.getFilename());
 			}
 		} else {
 			try {
 				f.createNewFile();
-//				System.out.println("Creating output file: "
-//						+ logger.getFilename());
 			} catch (IOException e) {
-//				System.err.println("Cannot create new file: "
-//						+ logger.getFilename());
+				System.err.println(e.getMessage());
 			}
 		}
 
@@ -76,22 +72,23 @@ public class LogWriter {
 	 * This method is synchronized to avoid concurrent access to 
 	 * the log file.
 	 * 
-	 * @param level
-	 * @param s
-	 * @param t
+	 * @param date format
+	 * @param log level
+	 * @param text
+	 * @param throwable
 	 */
-	public synchronized void writeToFile(int level, String s, Throwable t) {
+	public synchronized void writeToFile(String dateFormat, int logLevel, String text, Throwable throwable) {
 		if (fwStream == null) {
 			initLogger();
 		}
 		try {
-			if (t != null) {
-				t.printStackTrace(pw);
+			if (throwable != null) {
+				throwable.printStackTrace(pw);
 				if (logger.isVerbose()) {
-					t.printStackTrace();
+					throwable.printStackTrace();
 				}
 			} else {
-				String str = getDate() + " - " + getLevel(level) + " " + s;
+				String str = getDate(dateFormat) + getLevel(logLevel) + text;
 				out.write(str + "\n");
 				if (logger.isVerbose()) {
 					System.out.println(str);
@@ -100,7 +97,6 @@ public class LogWriter {
 			
 			out.flush();
 			if (f.length() > maxSize) {
-//				System.out.println("start new log");
 				startNewLog();
 			}
 		} catch (IOException e) {
@@ -167,19 +163,19 @@ public class LogWriter {
 	 */
 	private String getLevel(int level) {
 		if (level == LEVEL.TRACE) {
-			return "TRACE";
+			return "TRACE ";
 		} else if (level == LEVEL.DEBUG) {
-			return "DEBUG";
+			return "DEBUG ";
 		} else if (level == LEVEL.INFO) {
 			return "INFO ";
 		} else if (level == LEVEL.WARN) {
 			return "WARN ";
 		} else if (level == LEVEL.ERROR) {
-			return "ERROR";
+			return "ERROR ";
 		} else if (level == LEVEL.FATAL) {
-			return "FATAL";
+			return "FATAL ";
 		} else {
-			return "-";
+			return "";
 		}
 	}
 
@@ -188,10 +184,13 @@ public class LogWriter {
 	 * 
 	 * @return formated date
 	 */
-	private String getDate() {
+	private String getDate(String dateFormat) {
+		if (dateFormat == null) {
+			return "";
+		}
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat(logger.getDateFormat());
-		return sdf.format(cal.getTime());
+		return sdf.format(cal.getTime())  + " - ";
 	}
 	
 

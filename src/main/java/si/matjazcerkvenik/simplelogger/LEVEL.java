@@ -3,6 +3,8 @@ package si.matjazcerkvenik.simplelogger;
 /**
  * This class holds definitions of six logging levels: 
  * TRACE, DEBUG, INFO (default), WARN, ERROR and FATAL.
+ * DISABLED is a special case when all text is written anyway, 
+ * without log level.
  * 
  * @author Matjaz Cerkvenik
  *

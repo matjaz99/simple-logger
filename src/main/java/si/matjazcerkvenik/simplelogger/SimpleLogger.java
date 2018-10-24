@@ -99,8 +99,16 @@ public class SimpleLogger implements Serializable {
 		if (props.getProperty(PROPS.DATE_FORMAT) != null) {
 			this.dateFormat = props.getProperty(PROPS.DATE_FORMAT);
 		}
-		// TODO
+		
 		writer = new LogWriter(this);
+	}
+	
+	/**
+	 * Write to log file without checking log level.
+	 * @param s
+	 */
+	public void write(String s) {
+		writer.writeToFile(dateFormat, 99, s, null);
 	}
 	
 	/**
@@ -109,7 +117,7 @@ public class SimpleLogger implements Serializable {
 	 */
 	public void trace(String s) {
 		if (logLevel-1 < LEVEL.TRACE) {
-			writer.writeToFile(LEVEL.TRACE, s, null);
+			writer.writeToFile(dateFormat, LEVEL.TRACE, s, null);
 		}
 	}
 	
@@ -119,7 +127,7 @@ public class SimpleLogger implements Serializable {
 	 */
 	public void trace(String s, Throwable t) {
 		if (logLevel-1 < LEVEL.TRACE) {
-			writer.writeToFile(LEVEL.TRACE, s, t);
+			writer.writeToFile(dateFormat, LEVEL.TRACE, s, t);
 		}
 	}
 	
@@ -129,7 +137,7 @@ public class SimpleLogger implements Serializable {
 	 */
 	public void debug(String s) {
 		if (logLevel-1 < LEVEL.DEBUG) {
-			writer.writeToFile(LEVEL.DEBUG, s, null);
+			writer.writeToFile(dateFormat, LEVEL.DEBUG, s, null);
 		}
 	}
 	
@@ -140,7 +148,7 @@ public class SimpleLogger implements Serializable {
 	 */
 	public void debug(String s, Throwable t) {
 		if (logLevel-1 < LEVEL.DEBUG) {
-			writer.writeToFile(LEVEL.DEBUG, s, t);
+			writer.writeToFile(dateFormat, LEVEL.DEBUG, s, t);
 		}
 	}
 	
@@ -150,7 +158,7 @@ public class SimpleLogger implements Serializable {
 	 */
 	public void info(String s) {
 		if (logLevel-1 < LEVEL.INFO) {
-			writer.writeToFile(LEVEL.INFO, s, null);
+			writer.writeToFile(dateFormat, LEVEL.INFO, s, null);
 		}
 	}
 	
@@ -161,7 +169,7 @@ public class SimpleLogger implements Serializable {
 	 */
 	public void info(String s, Throwable t) {
 		if (logLevel-1 < LEVEL.INFO) {
-			writer.writeToFile(LEVEL.INFO, s, t);
+			writer.writeToFile(dateFormat, LEVEL.INFO, s, t);
 		}
 	}
 	
@@ -171,7 +179,7 @@ public class SimpleLogger implements Serializable {
 	 */
 	public void warn(String s) {
 		if (logLevel-1 < LEVEL.WARN) {
-			writer.writeToFile(LEVEL.WARN, s, null);
+			writer.writeToFile(dateFormat, LEVEL.WARN, s, null);
 		}
 	}
 	
@@ -182,7 +190,7 @@ public class SimpleLogger implements Serializable {
 	 */
 	public void warn(String s, Throwable t) {
 		if (logLevel-1 < LEVEL.WARN) {
-			writer.writeToFile(LEVEL.WARN, s, t);
+			writer.writeToFile(dateFormat, LEVEL.WARN, s, t);
 		}
 	}
 	
@@ -192,7 +200,7 @@ public class SimpleLogger implements Serializable {
 	 */
 	public void error(String s) {
 		if (logLevel-1 < LEVEL.ERROR) {
-			writer.writeToFile(LEVEL.ERROR, s, null);
+			writer.writeToFile(dateFormat, LEVEL.ERROR, s, null);
 		}
 	}
 	
@@ -203,7 +211,7 @@ public class SimpleLogger implements Serializable {
 	 */
 	public void error(String s, Throwable t) {
 		if (logLevel-1 < LEVEL.ERROR) {
-			writer.writeToFile(LEVEL.ERROR, s, t);
+			writer.writeToFile(dateFormat, LEVEL.ERROR, s, t);
 		}
 	}
 	
@@ -213,7 +221,7 @@ public class SimpleLogger implements Serializable {
 	 */
 	public void fatal(String s) {
 		if (logLevel-1 < LEVEL.FATAL) {
-			writer.writeToFile(LEVEL.FATAL, s, null);
+			writer.writeToFile(dateFormat, LEVEL.FATAL, s, null);
 		}
 	}
 	
@@ -224,7 +232,7 @@ public class SimpleLogger implements Serializable {
 	 */
 	public void fatal(String s, Throwable t) {
 		if (logLevel-1 < LEVEL.FATAL) {
-			writer.writeToFile(LEVEL.FATAL, s, t);
+			writer.writeToFile(dateFormat, LEVEL.FATAL, s, t);
 		}
 	}
 

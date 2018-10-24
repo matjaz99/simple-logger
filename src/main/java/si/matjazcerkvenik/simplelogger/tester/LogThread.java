@@ -24,6 +24,8 @@ public class LogThread extends Thread {
 		
 		while (true) {
 			
+			logger.write("Just write whatever you want");
+			
 			if (count % 2 == 0) {
 				logger.trace("writing to log, count=" + count + longText);
 			} else if (count % 3 == 0) {

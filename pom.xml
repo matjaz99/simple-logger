@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>si.matjazcerkvenik.simplelogger</groupId>
   <artifactId>simple-logger</artifactId>
-  <version>1.6.3</version>
+  <version>1.6.4</version>
   <name>SimpleLogger</name>
   <description>Logger for Java</description>
   <build>
