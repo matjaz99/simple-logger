@@ -10,7 +10,7 @@ import java.util.Properties;
  * Here is an example of usage:<br>
  * <code>SimpleLogger logger = new SimpleLogger();</code><br>
  * <code>logger.setFilename("/path/to/logger/mylog.log");</code><br>
- * <code>logger.setLogLevel(LEVEL.DEBUG);</code><br>
+ * <code>logger.setLogLevel(PROP_LEVEL.DEBUG);</code><br>
  * <code>logger.info("some text...");// this text goes to log file</code><br>
  * 
  * @author Matjaz Cerkvenik
@@ -19,24 +19,15 @@ import java.util.Properties;
 public class SimpleLogger implements Serializable {
 	
 	private static final long serialVersionUID = -6338153904743837043L;
-	
-	/** set to false to start new log */
-	private boolean append = true;
-	private int logLevel = LEVEL.INFO;
-	private String dateFormat = "yyyy.MM.dd hh:mm:ss:SSS";
-	private String filename = "./simple-logger.log";
-	// 1024b = 1kb, 1048584 = 1Mb
-	private int maxSizeMb = 10;
-	private int backup = 5;
-	private boolean verbose = false;
-	
-	private LogWriter writer = null;
+
+	private Config config = new Config();
+	private LogWriter writer;
 	
 	/**
 	 * Create new instance of SimpleLogger.
 	 */
 	public SimpleLogger() {
-		writer = new LogWriter(this);
+		writer = new LogWriter(config);
 	}
 	
 	/**
@@ -44,8 +35,8 @@ public class SimpleLogger implements Serializable {
 	 * @param filename
 	 */
 	public SimpleLogger(String filename) {
-		this.filename = filename;
-		writer = new LogWriter(this);
+		config.setFilename(filename);
+		writer = new LogWriter(config);
 	}
 	
 	/**
@@ -53,54 +44,8 @@ public class SimpleLogger implements Serializable {
 	 */
 	public SimpleLogger(Properties props) {
 		
-		if (props.getProperty(PROPS.FILENAME) != null) {
-			this.filename = props.getProperty(PROPS.FILENAME);
-		}
-		if (props.getProperty(PROPS.LEVEL) != null) {
-			String level = props.getProperty(PROPS.LEVEL);
-			if (level.equalsIgnoreCase("trace")) {
-				this.logLevel = LEVEL.TRACE;
-			} else if (level.equalsIgnoreCase("debug")) {
-				this.logLevel = LEVEL.DEBUG;
-			} else if (level.equalsIgnoreCase("info")) {
-				this.logLevel = LEVEL.INFO;
-			} else if (level.equalsIgnoreCase("warn")) {
-				this.logLevel = LEVEL.WARN;
-			} else if (level.equalsIgnoreCase("error")) {
-				this.logLevel = LEVEL.ERROR;
-			} else if (level.equalsIgnoreCase("fatal")) {
-				this.logLevel = LEVEL.FATAL;
-			} else {
-				this.logLevel = LEVEL.INFO;
-			}
-		}
-		if (props.getProperty(PROPS.APPEND) != null) {
-			if (props.getProperty(PROPS.APPEND).equalsIgnoreCase("true")) {
-				this.append = true;
-			}
-		}
-		if (props.getProperty(PROPS.VERBOSE) != null) {
-			if (props.getProperty(PROPS.VERBOSE).equalsIgnoreCase("true")) {
-				this.verbose = true;
-			}
-		}
-		if (props.getProperty(PROPS.MAX_FILE_SIZE) != null) {
-			try {
-				this.maxSizeMb = Integer.parseInt(props.getProperty(PROPS.MAX_FILE_SIZE));
-			} catch (NumberFormatException e) {
-			}
-		}
-		if (props.getProperty(PROPS.MAX_BACKUP_FILES) != null) {
-			try {
-				this.backup = Integer.parseInt(props.getProperty(PROPS.MAX_BACKUP_FILES));
-			} catch (NumberFormatException e) {
-			}
-		}
-		if (props.getProperty(PROPS.DATE_FORMAT) != null) {
-			this.dateFormat = props.getProperty(PROPS.DATE_FORMAT);
-		}
-		
-		writer = new LogWriter(this);
+		config.loadProperties(props);
+		writer = new LogWriter(config);
 	}
 	
 	/**
@@ -108,7 +53,7 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void write(String s) {
-		writer.writeToFile(dateFormat, 99, s, null);
+		writer.writeToFile(config.getDateFormat(), 99, s, null);
 	}
 	
 	/**
@@ -116,8 +61,8 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void trace(String s) {
-		if (logLevel-1 < LEVEL.TRACE) {
-			writer.writeToFile(dateFormat, LEVEL.TRACE, s, null);
+		if (config.getLogLevel()-1 < LEVEL.TRACE) {
+			writer.writeToFile(config.getDateFormat(), LEVEL.TRACE, s, null);
 		}
 	}
 	
@@ -126,8 +71,8 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void trace(String s, Throwable t) {
-		if (logLevel-1 < LEVEL.TRACE) {
-			writer.writeToFile(dateFormat, LEVEL.TRACE, s, t);
+		if (config.getLogLevel()-1 < LEVEL.TRACE) {
+			writer.writeToFile(config.getDateFormat(), LEVEL.TRACE, s, t);
 		}
 	}
 	
@@ -136,8 +81,8 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void debug(String s) {
-		if (logLevel-1 < LEVEL.DEBUG) {
-			writer.writeToFile(dateFormat, LEVEL.DEBUG, s, null);
+		if (config.getLogLevel()-1 < LEVEL.DEBUG) {
+			writer.writeToFile(config.getDateFormat(), LEVEL.DEBUG, s, null);
 		}
 	}
 	
@@ -147,8 +92,8 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void debug(String s, Throwable t) {
-		if (logLevel-1 < LEVEL.DEBUG) {
-			writer.writeToFile(dateFormat, LEVEL.DEBUG, s, t);
+		if (config.getLogLevel()-1 < LEVEL.DEBUG) {
+			writer.writeToFile(config.getDateFormat(), LEVEL.DEBUG, s, t);
 		}
 	}
 	
@@ -157,8 +102,8 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void info(String s) {
-		if (logLevel-1 < LEVEL.INFO) {
-			writer.writeToFile(dateFormat, LEVEL.INFO, s, null);
+		if (config.getLogLevel()-1 < LEVEL.INFO) {
+			writer.writeToFile(config.getDateFormat(), LEVEL.INFO, s, null);
 		}
 	}
 	
@@ -168,8 +113,8 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void info(String s, Throwable t) {
-		if (logLevel-1 < LEVEL.INFO) {
-			writer.writeToFile(dateFormat, LEVEL.INFO, s, t);
+		if (config.getLogLevel()-1 < LEVEL.INFO) {
+			writer.writeToFile(config.getDateFormat(), LEVEL.INFO, s, t);
 		}
 	}
 	
@@ -178,8 +123,8 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void warn(String s) {
-		if (logLevel-1 < LEVEL.WARN) {
-			writer.writeToFile(dateFormat, LEVEL.WARN, s, null);
+		if (config.getLogLevel()-1 < LEVEL.WARN) {
+			writer.writeToFile(config.getDateFormat(), LEVEL.WARN, s, null);
 		}
 	}
 	
@@ -189,8 +134,8 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void warn(String s, Throwable t) {
-		if (logLevel-1 < LEVEL.WARN) {
-			writer.writeToFile(dateFormat, LEVEL.WARN, s, t);
+		if (config.getLogLevel()-1 < LEVEL.WARN) {
+			writer.writeToFile(config.getDateFormat(), LEVEL.WARN, s, t);
 		}
 	}
 	
@@ -199,8 +144,8 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void error(String s) {
-		if (logLevel-1 < LEVEL.ERROR) {
-			writer.writeToFile(dateFormat, LEVEL.ERROR, s, null);
+		if (config.getLogLevel()-1 < LEVEL.ERROR) {
+			writer.writeToFile(config.getDateFormat(), LEVEL.ERROR, s, null);
 		}
 	}
 	
@@ -210,8 +155,8 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void error(String s, Throwable t) {
-		if (logLevel-1 < LEVEL.ERROR) {
-			writer.writeToFile(dateFormat, LEVEL.ERROR, s, t);
+		if (config.getLogLevel()-1 < LEVEL.ERROR) {
+			writer.writeToFile(config.getDateFormat(), LEVEL.ERROR, s, t);
 		}
 	}
 	
@@ -220,8 +165,8 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void fatal(String s) {
-		if (logLevel-1 < LEVEL.FATAL) {
-			writer.writeToFile(dateFormat, LEVEL.FATAL, s, null);
+		if (config.getLogLevel()-1 < LEVEL.FATAL) {
+			writer.writeToFile(config.getDateFormat(), LEVEL.FATAL, s, null);
 		}
 	}
 	
@@ -231,53 +176,35 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void fatal(String s, Throwable t) {
-		if (logLevel-1 < LEVEL.FATAL) {
-			writer.writeToFile(dateFormat, LEVEL.FATAL, s, t);
+		if (config.getLogLevel()-1 < LEVEL.FATAL) {
+			writer.writeToFile(config.getDateFormat(), LEVEL.FATAL, s, t);
 		}
 	}
 
 	/**
-	 * Return true if log file will be appended to existing one, 
-	 * or false if new log file will be created.
-	 * @return append
+	 * Close file writer stream
 	 */
-	public boolean isAppend() {
-		return append;
+	public void close() {
+		writer.closeLogger();
 	}
 
 	/**
-	 * Set weather the log file is overwritten or text is appended 
-	 * to log file when new instance of <code>SimpleLogger</code> 
+	 * Set weather the log file is overwritten or text is appended
+	 * to log file when new instance of <code>SimpleLogger</code>
 	 * is created. Set true to append or false to overwrite.
 	 * @param append
 	 */
 	public void setAppend(boolean append) {
-		this.append = append;
+		this.config.setAppend(append);
 	}
 
 	/**
-	 * Get current logging level.
-	 * @return logLevel
-	 */
-	public int getLogLevel() {
-		return logLevel;
-	}
-
-	/**
-	 * Set logging level. The text with logging level equal or above 
+	 * Set logging level. The text with logging level equal or above
 	 * logLevel will be logged to log file.
 	 * @param logLevel
 	 */
 	public void setLogLevel(int logLevel) {
-		this.logLevel = logLevel;
-	}
-
-	/**
-	 * Get current date format
-	 * @return dateFormat
-	 */
-	public String getDateFormat() {
-		return dateFormat;
+		this.config.setLogLevel(logLevel);
 	}
 
 	/**
@@ -285,15 +212,7 @@ public class SimpleLogger implements Serializable {
 	 * @param dateFormat
 	 */
 	public void setDateFormat(String dateFormat) {
-		this.dateFormat = dateFormat;
-	}
-
-	/**
-	 * Get current filename
-	 * @return filename
-	 */
-	public String getFilename() {
-		return filename;
+		this.config.setDateFormat(dateFormat);
 	}
 
 	/**
@@ -301,15 +220,7 @@ public class SimpleLogger implements Serializable {
 	 * @param filename
 	 */
 	public void setFilename(String filename) {
-		this.filename = filename;
-	}
-
-	/**
-	 * Get maximum size of log file before it is rolled over (in MB).
-	 * @return maxSizeMb
-	 */
-	public int getMaxSizeMb() {
-		return maxSizeMb;
+		this.config.setFilename(filename);
 	}
 
 	/**
@@ -317,16 +228,7 @@ public class SimpleLogger implements Serializable {
 	 * @param maxSizeMb
 	 */
 	public void setMaxSizeMb(int maxSizeMb) {
-		this.maxSizeMb = maxSizeMb;
-		writer.setMaxSize(maxSizeMb);
-	}
-
-	/**
-	 * Get number of backup rolling files
-	 * @return backup
-	 */
-	public int getBackup() {
-		return backup;
+		this.config.setMaxSizeMb(maxSizeMb);
 	}
 
 	/**
@@ -334,16 +236,7 @@ public class SimpleLogger implements Serializable {
 	 * @param backup
 	 */
 	public void setBackup(int backup) {
-//		writer.setBackupCopies(backup);
-		this.backup = backup;
-	}
-
-	/**
-	 * If set to true, text will be also printed in console
-	 * @return verbose
-	 */
-	public boolean isVerbose() {
-		return verbose;
+		this.config.setBackup(backup);
 	}
 
 	/**
@@ -351,17 +244,7 @@ public class SimpleLogger implements Serializable {
 	 * @param verbose
 	 */
 	public void setVerbose(boolean verbose) {
-		this.verbose = verbose;
+		this.config.setVerbose(verbose);
 	}
-	
-	/**
-	 * Close file writer stream
-	 */
-	public void close() {
-		writer.closeLogger();
-	}
-	
-	
-	
-	
+
 }

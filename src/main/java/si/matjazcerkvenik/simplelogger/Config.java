@@ -1,0 +1,197 @@
+package si.matjazcerkvenik.simplelogger;
+
+import java.util.Properties;
+
+/**
+ * Here are all configuration parameters. This class intentionally doesn't implement
+ * static variables, so you can have many instances of SimpleLogger with different
+ * configurations.
+ *
+ * @author matjaz
+ */
+public class Config {
+
+    /** set to false to start new log */
+    private boolean append = true;
+    private int logLevel = LEVEL.INFO;
+    private String dateFormat = "yyyy.MM.dd hh:mm:ss:SSS";
+    private String filename = "./simple-logger.log";
+    private int maxSizeMb = 10;
+    private int backup = 5;
+    private boolean verbose = true;
+
+    public static final String PROP_FILENAME = "simplelogger.filename";
+    public static final String PROP_LEVEL = "simplelogger.level";
+    public static final String PROP_APPEND = "simplelogger.append";
+    public static final String PROP_VERBOSE = "simplelogger.verbose";
+    public static final String PROP_MAX_FILE_SIZE = "simplelogger.maxFileSize";
+    public static final String PROP_MAX_BACKUP_FILES = "simplelogger.maxBackupFiles";
+    public static final String PROP_DATE_FORMAT = "simplelogger.dateFormat";
+
+    public void loadProperties(Properties props) {
+
+        filename = props.getProperty(PROP_FILENAME, "simple-logger.log");
+
+        String level = props.getProperty(PROP_LEVEL, "info");
+        if (level.equalsIgnoreCase("trace")) {
+            logLevel = LEVEL.TRACE;
+        } else if (level.equalsIgnoreCase("debug")) {
+            logLevel = LEVEL.DEBUG;
+        } else if (level.equalsIgnoreCase("info")) {
+            logLevel = LEVEL.INFO;
+        } else if (level.equalsIgnoreCase("warn")) {
+            logLevel = LEVEL.WARN;
+        } else if (level.equalsIgnoreCase("error")) {
+            logLevel = LEVEL.ERROR;
+        } else if (level.equalsIgnoreCase("fatal")) {
+            logLevel = LEVEL.FATAL;
+        } else {
+            logLevel = LEVEL.INFO;
+        }
+
+        if (props.getProperty(PROP_APPEND, "true").equalsIgnoreCase("true")) {
+            append = true;
+        } else {
+            append = false;
+        }
+
+        if (props.getProperty(PROP_VERBOSE, "true").equalsIgnoreCase("true")) {
+            verbose = true;
+        } else {
+            verbose = false;
+        }
+
+        try {
+            maxSizeMb = Integer.parseInt(props.getProperty(PROP_MAX_FILE_SIZE, "10"));
+        } catch (NumberFormatException e) {
+        }
+
+        try {
+            backup = Integer.parseInt(props.getProperty(PROP_MAX_BACKUP_FILES, "5"));
+        } catch (NumberFormatException e) {
+        }
+
+        dateFormat = props.getProperty(PROP_DATE_FORMAT, "yyyy.MM.dd hh:mm:ss:SSS");
+
+    }
+
+
+
+	/**
+	 * Return true if log file will be appended to existing one,
+	 * or false if new log file will be created.
+	 * @return append
+	 */
+	public boolean isAppend() {
+		return append;
+	}
+
+	/**
+	 * Set weather the log file is overwritten or text is appended
+	 * to log file when new instance of <code>SimpleLogger</code>
+	 * is created. Set true to append or false to overwrite.
+	 * @param append
+	 */
+	public void setAppend(boolean append) {
+		this.append = append;
+	}
+
+	/**
+	 * Get current logging level.
+	 * @return logLevel
+	 */
+	public int getLogLevel() {
+		return logLevel;
+	}
+
+	/**
+	 * Set logging level. The text with logging level equal or above
+	 * logLevel will be logged to log file.
+	 * @param logLevel
+	 */
+	public void setLogLevel(int logLevel) {
+		this.logLevel = logLevel;
+	}
+
+	/**
+	 * Get current date format
+	 * @return dateFormat
+	 */
+	public String getDateFormat() {
+		return dateFormat;
+	}
+
+	/**
+	 * Set format of date
+	 * @param dateFormat
+	 */
+	public void setDateFormat(String dateFormat) {
+		this.dateFormat = dateFormat;
+	}
+
+	/**
+	 * Get current filename
+	 * @return filename
+	 */
+	public String getFilename() {
+		return filename;
+	}
+
+	/**
+	 * Set filename and path.
+	 * @param filename
+	 */
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	/**
+	 * Get maximum size of log file before it is rolled over (in MB).
+	 * @return maxSizeMb
+	 */
+	public int getMaxSizeMb() {
+		return maxSizeMb;
+	}
+
+	/**
+	 * Set maximum size of log file before it is rolled.
+	 * @param maxSizeMb
+	 */
+	public void setMaxSizeMb(int maxSizeMb) {
+		this.maxSizeMb = maxSizeMb;
+	}
+
+	/**
+	 * Get number of backup rolling files
+	 * @return backup
+	 */
+	public int getBackup() {
+		return backup;
+	}
+
+	/**
+	 * Set number of rolling files.
+	 * @param backup
+	 */
+	public void setBackup(int backup) {
+//		writer.setBackupCopies(backup);
+		this.backup = backup;
+	}
+
+	/**
+	 * If set to true, text will be also printed in console
+	 * @return verbose
+	 */
+	public boolean isVerbose() {
+		return verbose;
+	}
+
+	/**
+	 * Set true to print lines in console window.
+	 * @param verbose
+	 */
+	public void setVerbose(boolean verbose) {
+		this.verbose = verbose;
+	}
+
+}

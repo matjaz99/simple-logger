@@ -17,16 +17,17 @@ import java.util.Calendar;
  */
 public class LogWriter {
 
-	private SimpleLogger logger = null;
-
-	private File f = null;
-	private FileWriter fwStream = null;
-	private BufferedWriter out = null;
-	private PrintWriter pw = null;
+	private Config config;
+	private File f;
+	private FileWriter fwStream;
+	private BufferedWriter out;
+	private PrintWriter pw;
+	private int megabyte = 1048584; // 1024b = 1kb, 1048584 = 1Mb
 	private long maxSize = 1048584; // in bytes
-	
-	public LogWriter(SimpleLogger logger) {
-		this.logger = logger;
+
+	public LogWriter(Config config) {
+		this.config = config;
+		this.maxSize = megabyte * config.getMaxSizeMb();
 	}
 
 	/**
@@ -38,14 +39,14 @@ public class LogWriter {
 			return;
 		}
 
-		f = new File(logger.getFilename());
+		f = new File(config.getFilename());
 		f.getParentFile().mkdirs();
 
 		if (f.exists()) {
-			if (logger.isAppend()) {
-				System.out.println("[SimpleLogger] Append output to: " + logger.getFilename());
+			if (config.isAppend()) {
+				System.out.println("[SimpleLogger] Append output to: " + config.getFilename());
 			} else {
-				System.out.println("[SimpleLogger] Overriding output file: " + logger.getFilename());
+				System.out.println("[SimpleLogger] Overriding output file: " + config.getFilename());
 			}
 		} else {
 			try {
@@ -56,10 +57,11 @@ public class LogWriter {
 		}
 
 		try {
-			fwStream = new FileWriter(logger.getFilename(), logger.isAppend());
+			fwStream = new FileWriter(config.getFilename(), config.isAppend());
 			pw = new PrintWriter(fwStream);
 		} catch (IOException e) {
-			System.err.println("Writing exception");
+			System.err.println("[SimpleLogger] Writing exception");
+			e.printStackTrace();
 		}
 		out = new BufferedWriter(fwStream);
 
@@ -72,8 +74,8 @@ public class LogWriter {
 	 * This method is synchronized to avoid concurrent access to 
 	 * the log file.
 	 * 
-	 * @param date format
-	 * @param log level
+	 * @param dateFormat
+	 * @param logLevel
 	 * @param text
 	 * @param throwable
 	 */
@@ -84,13 +86,13 @@ public class LogWriter {
 		try {
 			if (throwable != null) {
 				throwable.printStackTrace(pw);
-				if (logger.isVerbose()) {
+				if (config.isVerbose()) {
 					throwable.printStackTrace();
 				}
 			} else {
 				String str = getDate(dateFormat) + getLevel(logLevel) + text;
 				out.write(str + "\n");
-				if (logger.isVerbose()) {
+				if (config.isVerbose()) {
 					System.out.println(str);
 				}
 			}
@@ -121,23 +123,23 @@ public class LogWriter {
 	 */
 	private void renameAll() {
 		
-		File lastFile = new File(logger.getFilename() 
-				+ "." + logger.getBackup());
+		File lastFile = new File(config.getFilename()
+				+ "." + config.getBackup());
 		if (lastFile.exists()) {
 			lastFile.delete();
 		}
 		
-		for (int i = logger.getBackup() - 1; i > 0; i--) {
-			File file = new File(logger.getFilename() + "." + i);
+		for (int i = config.getBackup() - 1; i > 0; i--) {
+			File file = new File(config.getFilename() + "." + i);
 			if (file.exists()) {
-				File newFile = new File(logger.getFilename() + "." + (i+1));
+				File newFile = new File(config.getFilename() + "." + (i+1));
 				file.renameTo(newFile);
 			}
 		}
 		
-		File firstFile = new File(logger.getFilename());
+		File firstFile = new File(config.getFilename());
 		if (firstFile.exists()) {
-			File newFile = new File(logger.getFilename() + "." + 1);
+			File newFile = new File(config.getFilename() + "." + 1);
 			firstFile.renameTo(newFile);
 		}
 		
@@ -189,18 +191,8 @@ public class LogWriter {
 			return "";
 		}
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat(logger.getDateFormat());
+		SimpleDateFormat sdf = new SimpleDateFormat(config.getDateFormat());
 		return sdf.format(cal.getTime())  + " - ";
-	}
-	
-
-	/**
-	 * Set maximum log size.
-	 * 
-	 * @param maxSizeMb
-	 */
-	public void setMaxSize(int maxSizeMb) {
-		this.maxSize = maxSize * maxSizeMb;
 	}
 	
 	

@@ -1,19 +1,38 @@
-simple-logger
----
+# simple-logger
 
-Logger utility for java that is very simple to configure and use.
+Logger utility for Java that is very simple to configure and use.
 
-Last stable release: 1.6.4. Find it in the dist directory.
+Last stable release: 1.6.4.
 
-##### Project
+### Maven project
 
-Build with maven, ant is only for legacy.
-Releases are stored in dist directory.
+Build with maven:
+
+```
+mvn clean install
+```
+
+Simple-logger is not available on Maven central repo. You can either build it on your own 
+or download jar file from [here](http://matjazcerkvenik.si/download/simple-logger-1.6.4.jar) 
+and then manually import it into your local repository:
+
+```
+mvn install:install-file -Dfile=simple-logger-1.6.4.jar -DgroupId=si.matjazcerkvenik.simplelogger -DartifactId=simple-logger -Dversion=1.6.4 -Dpackaging=jar
+```
+
+Import maven dependency in `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>si.matjazcerkvenik.simplelogger</groupId>
+    <artifactId>simple-logger</artifactId>
+    <version>1.6.4</version>
+</dependency>
+```
+
+Older jar files (v1) are stored in dist directory.
 
 ### Usage
----
-
-Add simple-logger-x.y.z.jar to project path (dependency).
 
 Create new SimpleLogger object, set filename and start logging:
 
@@ -23,25 +42,21 @@ logger.info("Hello simple-logger!");
 ```
 
 ### Configuration
----
 
-Configure simple-logger with *simplelogger.properties* file:
+Simple-logger can be configured:
+- directly in the code
+- with properties file
+- with environment variables
 
-```
-simplelogger.filename=./simple-logger.log
-simplelogger.level=INFO
-simplelogger.append=true
-simplelogger.verbose=false
-simplelogger.maxFileSize=1
-simplelogger.maxBackupFiles=2
-simplelogger.dateFormat=yyyy.MM.dd hh:mm:ss:SSS
-```
+> All parameters are optional and have default values. 
+
+Parameters:
 
 *filename* - Relative or absolute path to log file.
 
 *level* - Log level. Supported log levels: TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 
-*append* - Set true to append text to file, or false to delete it first.
+*append* - Set true to append text to file, or false to delete file first.
 
 *verbose* - Also send text to standard output (console).
 
@@ -57,26 +72,13 @@ simplelogger.dateFormat=yyyy.MM.dd hh:mm:ss:SSS
 
 
 
-Load the properties into SimpleLogger and start logging:
+##### In the code
 
-```java
-Properties p = new Properties();
-p.load(new FileInputStream("./simplelogger.properties"));
-
-SimpleLogger logger = new SimpleLogger(p);
-
-logger.info("Hello simple-logger!");
-```
-
-
----
-
-All configuration can be done in the code. There are setters for all parameters:
+Create new object and set parameters.
 
 ```java
 SimpleLogger logger = new SimpleLogger();
-
-logger.setFilename("./simplelogger.properties")
+logger.setFilename("./test.log")
 logger.setAppend(true);
 logger.setLogLevel(LEVEL.INFO)
 logger.setDateFormat("yyyy.MM.dd hh:mm:ss:SSS");
@@ -87,29 +89,72 @@ logger.setBackup(5);
 logger.info("Hello simple-logger!");
 ```
 
-### Just plain text
----
+##### Properties file
 
-Use write(text) method to write just plain text without date, time and log level.
+Prepare a `simplelogger.properties` file with parameters:
+
+```
+simplelogger.filename=./simple-logger.log
+simplelogger.level=INFO
+simplelogger.append=true
+simplelogger.verbose=false
+simplelogger.maxFileSize=1
+simplelogger.maxBackupFiles=2
+simplelogger.dateFormat=yyyy.MM.dd hh:mm:ss:SSS
+```
+
+Load the properties into SimpleLogger and start logging:
+
+```java
+Properties props = new Properties();
+props.load(new FileInputStream("./simplelogger.properties"));
+
+SimpleLogger logger = new SimpleLogger(props);
+logger.info("Hello simple-logger!");
+```
+
+##### Environment variables
+
+TODO
+
+### Writing plain text
+
+Simple-logger can also be used to write some text quickly in the file. Those days 
+when you are thinking about InputStreams and FileReaderBuffers and whatsoever are gone. 
+
+Simple call `write` method to write just plain text without date, time and log level:
 
 ```java
 logger.write("Just some text");
 ```
 
-
 ### Logging exceptions
----
 
-All methods provide additional throwable argument to print exception stack.
+Simple-logger can also do that. Print full exception stack:
 
 ```java
-logger.error("Exception is thrown: ", e);
+try {...}
+catch (Exception e) {
+    logger.error("Exception is thrown: ", e);
+}
 ```
 
----
+### Closing streams
+
+It is recommended to close the simple-logger output streams before stopping application:
+
+```java
+logger.close();
+```
+
 
 ### Version history
 
+2.0.0
+- Refactored and a bit redesigned, but mostly refactored
+- Support configuration vith environment variables
+
+---
 
 1.6.4
 - Added write(text) method where the text is written to log file without checking log level. Date and log level is also not printed. Just text.
