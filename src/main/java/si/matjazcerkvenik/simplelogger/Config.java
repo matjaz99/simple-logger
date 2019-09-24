@@ -1,5 +1,6 @@
 package si.matjazcerkvenik.simplelogger;
 
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -28,26 +29,56 @@ public class Config {
     public static final String PROP_MAX_BACKUP_FILES = "simplelogger.maxBackupFiles";
     public static final String PROP_DATE_FORMAT = "simplelogger.dateFormat";
 
-    public void loadProperties(Properties props) {
+	public static final String ENV_FILENAME = "SIMPLELOGGER_FILENAME";
+	public static final String ENV_LEVEL = "SIMPLELOGGER_LEVEL";
+	public static final String ENV_APPEND = "SIMPLELOGGER_APPEND";
+	public static final String ENV_VERBOSE = "SIMPLELOGGER_VERBOSE";
+	public static final String ENV_MAX_FILE_SIZE = "SIMPLELOGGER_MAXFILESIZE";
+	public static final String ENV_MAX_BACKUP_FILES = "SIMPLELOGGER_MAXBACKUPFILES";
+	public static final String ENV_DATE_FORMAT = "SIMPLELOGGER_DATEFORMAT";
+
+	public Config() {
+
+		// read environment variables
+		Map<String, String> map = System.getenv();
+
+		filename = map.getOrDefault(ENV_FILENAME, "simple-logger.log");
+
+		String level = map.getOrDefault(ENV_LEVEL, "info");
+		setLogLevel(level);
+
+		if (map.getOrDefault(ENV_APPEND, "true").equalsIgnoreCase("true")) {
+			append = true;
+		} else {
+			append = false;
+		}
+
+		if (map.getOrDefault(ENV_VERBOSE, "true").equalsIgnoreCase("true")) {
+			verbose = true;
+		} else {
+			verbose = false;
+		}
+
+		try {
+			maxSizeMb = Integer.parseInt(map.getOrDefault(ENV_MAX_FILE_SIZE, "10"));
+		} catch (NumberFormatException e) {
+		}
+
+		try {
+			backup = Integer.parseInt(map.getOrDefault(ENV_MAX_BACKUP_FILES, "5"));
+		} catch (NumberFormatException e) {
+		}
+
+		dateFormat = map.getOrDefault(ENV_DATE_FORMAT, "yyyy.MM.dd hh:mm:ss:SSS");
+
+	}
+
+	public void loadProperties(Properties props) {
 
         filename = props.getProperty(PROP_FILENAME, "simple-logger.log");
 
         String level = props.getProperty(PROP_LEVEL, "info");
-        if (level.equalsIgnoreCase("trace")) {
-            logLevel = LEVEL.TRACE;
-        } else if (level.equalsIgnoreCase("debug")) {
-            logLevel = LEVEL.DEBUG;
-        } else if (level.equalsIgnoreCase("info")) {
-            logLevel = LEVEL.INFO;
-        } else if (level.equalsIgnoreCase("warn")) {
-            logLevel = LEVEL.WARN;
-        } else if (level.equalsIgnoreCase("error")) {
-            logLevel = LEVEL.ERROR;
-        } else if (level.equalsIgnoreCase("fatal")) {
-            logLevel = LEVEL.FATAL;
-        } else {
-            logLevel = LEVEL.INFO;
-        }
+        setLogLevel(level);
 
         if (props.getProperty(PROP_APPEND, "true").equalsIgnoreCase("true")) {
             append = true;
@@ -174,7 +205,6 @@ public class Config {
 	 * @param backup
 	 */
 	public void setBackup(int backup) {
-//		writer.setBackupCopies(backup);
 		this.backup = backup;
 	}
 
@@ -192,6 +222,24 @@ public class Config {
 	 */
 	public void setVerbose(boolean verbose) {
 		this.verbose = verbose;
+	}
+
+	private void setLogLevel(String level) {
+		if (level.equalsIgnoreCase("trace")) {
+			logLevel = LEVEL.TRACE;
+		} else if (level.equalsIgnoreCase("debug")) {
+			logLevel = LEVEL.DEBUG;
+		} else if (level.equalsIgnoreCase("info")) {
+			logLevel = LEVEL.INFO;
+		} else if (level.equalsIgnoreCase("warn")) {
+			logLevel = LEVEL.WARN;
+		} else if (level.equalsIgnoreCase("error")) {
+			logLevel = LEVEL.ERROR;
+		} else if (level.equalsIgnoreCase("fatal")) {
+			logLevel = LEVEL.FATAL;
+		} else {
+			logLevel = LEVEL.INFO;
+		}
 	}
 
 }

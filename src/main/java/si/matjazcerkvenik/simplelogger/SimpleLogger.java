@@ -43,7 +43,6 @@ public class SimpleLogger implements Serializable {
 	 * Create new instance of SimpleLogger according to given properties.
 	 */
 	public SimpleLogger(Properties props) {
-		
 		config.loadProperties(props);
 		writer = new LogWriter(config);
 	}

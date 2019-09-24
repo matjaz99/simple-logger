@@ -97,7 +97,7 @@ Prepare a `simplelogger.properties` file with parameters:
 simplelogger.filename=./simple-logger.log
 simplelogger.level=INFO
 simplelogger.append=true
-simplelogger.verbose=false
+simplelogger.verbose=true
 simplelogger.maxFileSize=1
 simplelogger.maxBackupFiles=2
 simplelogger.dateFormat=yyyy.MM.dd hh:mm:ss:SSS
@@ -115,7 +115,17 @@ logger.info("Hello simple-logger!");
 
 ##### Environment variables
 
-TODO
+Set environment variables:
+
+SIMPLELOGGER_FILENAME="./simple-logger.log"
+SIMPLELOGGER_LEVEL="INFO"
+SIMPLELOGGER_APPEND="true"
+SIMPLELOGGER_VERBOSE="true"
+SIMPLELOGGER_MAXFILESIZE="1"
+SIMPLELOGGER_MAXBACKUPFILES="2"
+SIMPLELOGGER_DATEFORMAT="yyyy.MM.dd hh:mm:ss:SSS"
+
+> Environment variables are loaded first. They can be overwritten by properties file. All parameters can be changed in the code at anytime, even during runtime.
 
 ### Writing plain text
 
