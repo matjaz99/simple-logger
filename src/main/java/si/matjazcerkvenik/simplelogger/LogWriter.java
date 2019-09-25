@@ -28,6 +28,7 @@ public class LogWriter {
 	public LogWriter(Config config) {
 		this.config = config;
 		this.maxSize = megabyte * config.getMaxSizeMb();
+		System.out.println("[SimpleLogger] Config: " + config.toString());
 	}
 
 	/**

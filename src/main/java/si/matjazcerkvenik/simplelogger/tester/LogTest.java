@@ -26,7 +26,7 @@ public class LogTest {
 		
 		SimpleLogger logger = new SimpleLogger();
 		logger.setLogLevel(LEVEL.INFO);
-		logger.setFilename("/Users/matjaz/Desktop/simple-logger.log");
+		logger.setFilename("./test/simple-logger.log");
 //		logger.setFilename("D:\\aaaaaaaa\\testlog.log");
 		logger.setMaxSizeMb(2);
 		logger.setBackup(3);

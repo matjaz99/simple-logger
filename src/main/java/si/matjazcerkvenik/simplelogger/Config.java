@@ -242,4 +242,11 @@ public class Config {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "[" + "append=" + append + ", logLevel=" + logLevel +
+				", dateFormat='" + dateFormat + ", filename='" + filename +
+				", maxSizeMb=" + maxSizeMb + ", backup=" + backup +
+				", verbose=" + verbose + "]";
+	}
 }
