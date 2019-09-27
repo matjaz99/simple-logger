@@ -187,6 +187,15 @@ public class SimpleLogger implements Serializable {
 		writer.closeLogger();
 	}
 
+
+
+
+
+
+	/* ****** Getters and setters ****** */
+
+
+
 	/**
 	 * Set weather the log file is overwritten or text is appended
 	 * to log file when new instance of <code>SimpleLogger</code>
@@ -221,6 +230,12 @@ public class SimpleLogger implements Serializable {
 	public void setFilename(String filename) {
 		this.config.setFilename(filename);
 	}
+
+	/**
+	 * Return filename
+	 * @return filename
+	 */
+	public String getFilename() { return config.getFilename(); }
 
 	/**
 	 * Set maximum size of log file before it is rolled.

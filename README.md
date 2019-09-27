@@ -167,9 +167,9 @@ logger.close();
 
 ### Version history
 
-2.0.0
+1.7.0
 - Refactored and a bit redesigned, but mostly refactored
-- Support configuration vith environment variables
+- Support configuration with environment variables
 
 ---
 

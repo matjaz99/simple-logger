@@ -42,7 +42,7 @@ public class Config {
 		// read environment variables
 		Map<String, String> map = System.getenv();
 
-		filename = map.getOrDefault(ENV_FILENAME, "simple-logger.log");
+		filename = map.getOrDefault(ENV_FILENAME, "./simple-logger.log");
 
 		String level = map.getOrDefault(ENV_LEVEL, "info");
 		setLogLevel(level);
@@ -75,7 +75,7 @@ public class Config {
 
 	public void loadProperties(Properties props) {
 
-        filename = props.getProperty(PROP_FILENAME, "simple-logger.log");
+        filename = props.getProperty(PROP_FILENAME, "./simple-logger.log");
 
         String level = props.getProperty(PROP_LEVEL, "info");
         setLogLevel(level);
