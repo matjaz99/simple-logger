@@ -12,15 +12,16 @@ Build with maven:
 mvn clean install
 ```
 
-Simple-logger is not available on Maven central repo. You can either build it on your own 
-or download jar file from [here](http://matjazcerkvenik.si/download/simple-logger-1.6.4.jar) 
-and then manually import it into your local repository:
+Simple-logger is not available on Maven central repo.
+
+In your pipeline, you can download it and install it into local maven repository:
 
 ```
+whet http://matjazcerkvenik.si/download/simple-logger-1.6.4.jar
 mvn install:install-file -Dfile=simple-logger-1.6.4.jar -DgroupId=si.matjazcerkvenik.simplelogger -DartifactId=simple-logger -Dversion=1.6.4 -Dpackaging=jar
 ```
 
-Import maven dependency in `pom.xml`:
+Add maven dependency in `pom.xml`:
 
 ```xml
 <dependency>
@@ -30,11 +31,9 @@ Import maven dependency in `pom.xml`:
 </dependency>
 ```
 
-Older jar files (v1) are stored in dist directory.
-
 ### Usage
 
-Create new SimpleLogger object, set filename and start logging:
+In Java create new `SimpleLogger` object, set filename and start logging:
 
 ```java
 SimpleLogger logger = new SimpleLogger("./test.log");
@@ -72,7 +71,7 @@ Parameters:
 
 
 
-##### In the code
+#### Configuring inline
 
 Create new object and set parameters.
 
@@ -89,7 +88,7 @@ logger.setBackup(5);
 logger.info("Hello simple-logger!");
 ```
 
-##### Properties file
+#### Properties file
 
 Prepare a `simplelogger.properties` file with parameters:
 
@@ -103,7 +102,7 @@ simplelogger.maxBackupFiles=2
 simplelogger.dateFormat=yyyy.MM.dd hh:mm:ss:SSS
 ```
 
-Load the properties into SimpleLogger and start logging:
+Pass the properties to SimpleLogger when creating new object and start logging:
 
 ```java
 Properties props = new Properties();
@@ -113,7 +112,7 @@ SimpleLogger logger = new SimpleLogger(props);
 logger.info("Hello simple-logger!");
 ```
 
-##### Environment variables
+#### Environment variables
 
 Set environment variables:
 
@@ -125,14 +124,22 @@ SIMPLELOGGER_MAXFILESIZE="1"
 SIMPLELOGGER_MAXBACKUPFILES="2"
 SIMPLELOGGER_DATEFORMAT="yyyy.MM.dd hh:mm:ss:SSS"
 
-> Environment variables are loaded first. They can be overwritten by properties file. All parameters can be changed in the code at anytime, even during runtime.
+In this case use empty constructor when creating new SimpleLogger object.
+
+> Environment variables are always loaded first (if they exist, otherwise default values will apply). They can be overwritten by properties file or inline whenever is necessary.
+
+```java
+SimpleLogger logger = new SimpleLogger();
+logger.info("Hello simple-logger!");
+```
+
 
 ### Writing plain text
 
 Simple-logger can also be used to write some text quickly in the file. Those days 
-when you are thinking about InputStreams and FileReaderBuffers and whatsoever are gone. 
+when you are thinking about InputStreams and Readers and Buffers and are gone. 
 
-Simple call `write` method to write just plain text without date, time and log level:
+Call `write` method to write just plain text, whatever you like:
 
 ```java
 logger.write("Just some text");
@@ -140,7 +147,7 @@ logger.write("Just some text");
 
 ### Logging exceptions
 
-Simple-logger can also do that. Print full exception stack:
+Simple-logger can also log exception stacks:
 
 ```java
 try {...}
