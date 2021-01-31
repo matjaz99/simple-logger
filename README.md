@@ -116,6 +116,7 @@ logger.info("Hello simple-logger!");
 
 Set environment variables:
 
+```
 SIMPLELOGGER_FILENAME="./simple-logger.log"
 SIMPLELOGGER_LEVEL="INFO"
 SIMPLELOGGER_APPEND="true"
@@ -123,8 +124,9 @@ SIMPLELOGGER_VERBOSE="true"
 SIMPLELOGGER_MAXFILESIZE="1"
 SIMPLELOGGER_MAXBACKUPFILES="2"
 SIMPLELOGGER_DATEFORMAT="yyyy.MM.dd hh:mm:ss:SSS"
+```
 
-In this case use empty constructor when creating new SimpleLogger object.
+Use empty constructor when creating new SimpleLogger object.
 
 > Environment variables are always loaded first (if they exist, otherwise default values will apply). They can be overwritten by properties file or inline whenever is necessary.
 
