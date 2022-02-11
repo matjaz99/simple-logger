@@ -17,7 +17,7 @@ Simple-logger is not available on Maven central repo.
 In your pipeline, you can download it and install it into local maven repository:
 
 ```
-whet http://matjazcerkvenik.si/download/simple-logger-1.6.4.jar
+wget http://matjazcerkvenik.si/download/simple-logger-1.6.4.jar
 mvn install:install-file -Dfile=simple-logger-1.6.4.jar -DgroupId=si.matjazcerkvenik.simplelogger -DartifactId=simple-logger -Dversion=1.6.4 -Dpackaging=jar
 ```
 
