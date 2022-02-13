@@ -9,8 +9,8 @@ import java.util.Properties;
  * can be set directly from the code.<br><br>
  * Here is an example of usage:<br>
  * <code>SimpleLogger logger = new SimpleLogger();</code><br>
- * <code>logger.setFilename("/path/to/logger/mylog.log");</code><br>
- * <code>logger.setLogLevel(PROP_LEVEL.DEBUG);</code><br>
+ * <code>logger.setFilename("/path/to/my-log.log");</code><br>
+ * <code>logger.setLogLevel(LEVEL.DEBUG);</code><br>
  * <code>logger.info("some text...");// this text goes to log file</code><br>
  * 
  * @author Matjaz Cerkvenik
