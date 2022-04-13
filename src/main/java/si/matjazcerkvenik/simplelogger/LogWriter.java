@@ -170,9 +170,9 @@ public class LogWriter {
 		} else if (level == LEVEL.DEBUG) {
 			return "DEBUG ";
 		} else if (level == LEVEL.INFO) {
-			return "INFO ";
+			return "INFO  ";
 		} else if (level == LEVEL.WARN) {
-			return "WARN ";
+			return "WARN  ";
 		} else if (level == LEVEL.ERROR) {
 			return "ERROR ";
 		} else if (level == LEVEL.FATAL) {
