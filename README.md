@@ -4,6 +4,9 @@ Logger utility for Java that is very simple to configure and use.
 
 Last stable release: 1.6.4.
 
+The last compiled jar file is in `dist` directory.
+
+
 ### Maven project
 
 Build with maven:
