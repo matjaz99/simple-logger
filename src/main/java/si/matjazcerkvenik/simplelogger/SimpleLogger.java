@@ -52,7 +52,7 @@ public class SimpleLogger implements Serializable {
 	 * @param s
 	 */
 	public void write(String s) {
-		writer.writeToFile(config.getDateFormat(), 99, s, null);
+		writer.writeToFile(null, 99, s, null);
 	}
 	
 	/**
