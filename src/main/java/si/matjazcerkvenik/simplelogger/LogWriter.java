@@ -5,8 +5,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermission;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This class implements writing to log file and handling of 
@@ -32,7 +36,7 @@ public class LogWriter {
 	}
 
 	/**
-	 * Create new output file if it does not exists yet.
+	 * Create new output file if it does not exist yet.
 	 */
 	private void initLogger() {
 		
@@ -52,6 +56,7 @@ public class LogWriter {
 		} else {
 			try {
 				f.createNewFile();
+				Files.setPosixFilePermissions(f.toPath(), getFilePermissions());
 			} catch (IOException e) {
 				System.err.println(e.getMessage());
 			}
@@ -66,6 +71,15 @@ public class LogWriter {
 		}
 		out = new BufferedWriter(fwStream);
 
+	}
+
+	private Set<PosixFilePermission> getFilePermissions() {
+		Set<PosixFilePermission> permissions = new HashSet<>();
+		permissions.add(PosixFilePermission.OWNER_READ);
+		permissions.add(PosixFilePermission.OWNER_WRITE);
+		permissions.add(PosixFilePermission.GROUP_READ);
+		permissions.add(PosixFilePermission.OTHERS_READ);
+		return permissions;
 	}
 
 	/**

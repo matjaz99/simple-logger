@@ -18,7 +18,7 @@ import java.util.Properties;
  */
 public class SimpleLogger implements Serializable {
 	
-	private static final long serialVersionUID = -6338153904743837043L;
+	private static final long serialVersionUID = -61394748703L;
 
 	private Config config = new Config();
 	private LogWriter writer;
