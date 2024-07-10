@@ -18,8 +18,8 @@ Simple-logger is not available on Maven central repo.
 Download it and install it into local maven repository:
 
 ```
-wget http://matjazcerkvenik.si/download/simple-logger-1.7.1.jar
-mvn install:install-file -Dfile=simple-logger-1.7.1.jar -DgroupId=si.matjazcerkvenik.simplelogger -DartifactId=simple-logger -Dversion=1.7.1 -Dpackaging=jar
+wget http://matjazcerkvenik.si/download/simple-logger-1.7.2.jar
+mvn install:install-file -Dfile=simple-logger-1.7.2.jar -DgroupId=si.matjazcerkvenik.simplelogger -DartifactId=simple-logger -Dversion=1.7.2 -Dpackaging=jar
 ```
 
 Add maven dependency in `pom.xml`:
@@ -28,13 +28,13 @@ Add maven dependency in `pom.xml`:
 <dependency>
     <groupId>si.matjazcerkvenik.simplelogger</groupId>
     <artifactId>simple-logger</artifactId>
-    <version>1.6.4</version>
+    <version>1.7.2</version>
 </dependency>
 ```
 
 ### Usage
 
-In Java create new `SimpleLogger` object, set filename and start logging:
+In Java create new `SimpleLogger` object, set filename and start logging immediately:
 
 ```java
 SimpleLogger logger = new SimpleLogger("./test.log");
@@ -63,6 +63,8 @@ Parameters:
 *maxFileSize* - Maximum size of log file in megabytes.
 
 *maxBackupFiles* - Number of rolling files. Active log file has suffix .log while older log files get suffix .log.1. When new log file is created, the index of old log files are shifted and the last file is deleted.
+
+*filePermissions* - Set POSIX file permissions on log file
 
 *dateFormat* - Date format in Java compatible syntax, for example:
 - yyyy.MM.dd hh:mm:ss:SSS
@@ -100,6 +102,7 @@ simplelogger.append=true
 simplelogger.verbose=true
 simplelogger.maxFileSize=1
 simplelogger.maxBackupFiles=2
+simplelogger.filepermissions=rw-r--r--
 simplelogger.dateFormat=yyyy.MM.dd hh:mm:ss:SSS
 ```
 
@@ -124,6 +127,7 @@ SIMPLELOGGER_APPEND="true"
 SIMPLELOGGER_VERBOSE="true"
 SIMPLELOGGER_MAXFILESIZE="1"
 SIMPLELOGGER_MAXBACKUPFILES="2"
+SIMPLELOGGER_FILEPERMISSIONS="rw-r--r--"
 SIMPLELOGGER_DATEFORMAT="yyyy.MM.dd hh:mm:ss:SSS"
 ```
 
