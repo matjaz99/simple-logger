@@ -170,6 +170,16 @@ logger.close();
 
 ### Version history
 
+1.7.2
+- set posix permissions on log file
+
+---
+
+1.7.1
+- a fix in write function when writing log without timestamp
+
+---
+
 1.7.0
 - Refactored and a bit redesigned, but mostly refactored
 - Support configuration with environment variables

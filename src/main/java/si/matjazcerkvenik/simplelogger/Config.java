@@ -18,7 +18,7 @@ public class Config {
     private String filename = "./simple-logger.log";
     private int maxSizeMb = 10;
     private int backup = 5;
-	private int filePermissions = 644;
+	private String filePermissions = "rw-r--r--";
     private boolean verbose = true;
 
     public static final String PROP_FILENAME = "simplelogger.filename";
@@ -71,10 +71,7 @@ public class Config {
 		} catch (NumberFormatException e) {
 		}
 
-		try {
-			filePermissions = Integer.parseInt(map.getOrDefault(ENV_FILE_PERMISSIONS, "644"));
-		} catch (NumberFormatException e) {
-		}
+		filePermissions = map.getOrDefault(ENV_FILE_PERMISSIONS, "rw-r--r--");
 
 		dateFormat = map.getOrDefault(ENV_DATE_FORMAT, "yyyy.MM.dd hh:mm:ss:SSS");
 
@@ -109,10 +106,7 @@ public class Config {
         } catch (NumberFormatException e) {
         }
 
-		try {
-			filePermissions = Integer.parseInt(props.getProperty(PROP_FILE_PERMISSIONS, "644"));
-		} catch (NumberFormatException e) {
-		}
+		filePermissions = props.getProperty(PROP_FILE_PERMISSIONS, "rw-r--r--");
 
         dateFormat = props.getProperty(PROP_DATE_FORMAT, "yyyy.MM.dd hh:mm:ss:SSS");
 
@@ -240,7 +234,7 @@ public class Config {
 	 * Get current log file permissions.
 	 * @return permissions
 	 */
-	public int getFilePermissions() {
+	public String getFilePermissions() {
 		return filePermissions;
 	}
 
@@ -248,7 +242,7 @@ public class Config {
 	 * Set log file permissions
 	 * @param filePermissions
 	 */
-	public void setFilePermissions(int filePermissions) {
+	public void setFilePermissions(String filePermissions) {
 		this.filePermissions = filePermissions;
 	}
 
