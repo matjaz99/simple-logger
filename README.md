@@ -2,8 +2,6 @@
 
 Logger utility for Java that is very simple to configure and use.
 
-Last stable release: 1.6.4.
-
 The last compiled jar file is in `dist` directory.
 
 
@@ -17,11 +15,11 @@ mvn clean install
 
 Simple-logger is not available on Maven central repo.
 
-In your pipeline, you can download it and install it into local maven repository:
+Download it and install it into local maven repository:
 
 ```
-wget http://matjazcerkvenik.si/download/simple-logger-1.6.4.jar
-mvn install:install-file -Dfile=simple-logger-1.6.4.jar -DgroupId=si.matjazcerkvenik.simplelogger -DartifactId=simple-logger -Dversion=1.6.4 -Dpackaging=jar
+wget http://matjazcerkvenik.si/download/simple-logger-1.7.1.jar
+mvn install:install-file -Dfile=simple-logger-1.7.1.jar -DgroupId=si.matjazcerkvenik.simplelogger -DartifactId=simple-logger -Dversion=1.7.1 -Dpackaging=jar
 ```
 
 Add maven dependency in `pom.xml`:

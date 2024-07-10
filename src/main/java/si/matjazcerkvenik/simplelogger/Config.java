@@ -18,7 +18,7 @@ public class Config {
     private String filename = "./simple-logger.log";
     private int maxSizeMb = 10;
     private int backup = 5;
-	private int permissions = 644;
+	private int filePermissions = 644;
     private boolean verbose = true;
 
     public static final String PROP_FILENAME = "simplelogger.filename";
@@ -27,7 +27,7 @@ public class Config {
     public static final String PROP_VERBOSE = "simplelogger.verbose";
     public static final String PROP_MAX_FILE_SIZE = "simplelogger.maxFileSize";
     public static final String PROP_MAX_BACKUP_FILES = "simplelogger.maxBackupFiles";
-	public static final String PROP_FILE_PERMISSIONS = "simplelogger.permissions";
+	public static final String PROP_FILE_PERMISSIONS = "simplelogger.filepermissions";
     public static final String PROP_DATE_FORMAT = "simplelogger.dateFormat";
 
 	public static final String ENV_FILENAME = "SIMPLELOGGER_FILENAME";
@@ -36,7 +36,7 @@ public class Config {
 	public static final String ENV_VERBOSE = "SIMPLELOGGER_VERBOSE";
 	public static final String ENV_MAX_FILE_SIZE = "SIMPLELOGGER_MAXFILESIZE";
 	public static final String ENV_MAX_BACKUP_FILES = "SIMPLELOGGER_MAXBACKUPFILES";
-	public static final String ENV_FILE_PERMISSIONS = "SIMPLELOGGER_PERMISSIONS";
+	public static final String ENV_FILE_PERMISSIONS = "SIMPLELOGGER_FILEPERMISSIONS";
 	public static final String ENV_DATE_FORMAT = "SIMPLELOGGER_DATEFORMAT";
 
 	public Config() {
@@ -72,7 +72,7 @@ public class Config {
 		}
 
 		try {
-			permissions = Integer.parseInt(map.getOrDefault(ENV_FILE_PERMISSIONS, "644"));
+			filePermissions = Integer.parseInt(map.getOrDefault(ENV_FILE_PERMISSIONS, "644"));
 		} catch (NumberFormatException e) {
 		}
 
@@ -110,7 +110,7 @@ public class Config {
         }
 
 		try {
-			permissions = Integer.parseInt(props.getProperty(PROP_FILE_PERMISSIONS, "644"));
+			filePermissions = Integer.parseInt(props.getProperty(PROP_FILE_PERMISSIONS, "644"));
 		} catch (NumberFormatException e) {
 		}
 
@@ -240,16 +240,16 @@ public class Config {
 	 * Get current log file permissions.
 	 * @return permissions
 	 */
-	public int getPermissions() {
-		return permissions;
+	public int getFilePermissions() {
+		return filePermissions;
 	}
 
 	/**
 	 * Set log file permissions
-	 * @param permissions
+	 * @param filePermissions
 	 */
-	public void setPermissions(int permissions) {
-		this.permissions = permissions;
+	public void setFilePermissions(int filePermissions) {
+		this.filePermissions = filePermissions;
 	}
 
 	private void setLogLevel(String level) {
@@ -275,7 +275,7 @@ public class Config {
 		return "[" + "append=" + append + ", logLevel=" + logLevel +
 				", dateFormat='" + dateFormat + ", filename='" + filename +
 				", maxSizeMb=" + maxSizeMb + ", backup=" + backup +
-				", permissions=" + permissions +
+				", permissions=" + filePermissions +
 				", verbose=" + verbose + "]";
 	}
 }

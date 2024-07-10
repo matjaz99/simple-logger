@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -56,7 +57,8 @@ public class LogWriter {
 		} else {
 			try {
 				f.createNewFile();
-				Files.setPosixFilePermissions(f.toPath(), getFilePermissions());
+//				Files.setPosixFilePermissions(f.toPath(), getFilePermissions());
+				Files.setPosixFilePermissions(f.toPath(), PosixFilePermissions.fromString("rw-rw-rw-"));
 			} catch (IOException e) {
 				System.err.println(e.getMessage());
 			}
@@ -74,6 +76,8 @@ public class LogWriter {
 	}
 
 	private Set<PosixFilePermission> getFilePermissions() {
+		String p = Integer.toString(config.getFilePermissions());
+		String owner = p.substring(0, 1);
 		Set<PosixFilePermission> permissions = new HashSet<>();
 		permissions.add(PosixFilePermission.OWNER_READ);
 		permissions.add(PosixFilePermission.OWNER_WRITE);
