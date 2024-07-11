@@ -261,4 +261,12 @@ public class SimpleLogger implements Serializable {
 		this.config.setVerbose(verbose);
 	}
 
+	/**
+	 * Set POSIX permissions on log file. Format: rw-r--r--
+	 * @param permissions
+	 */
+	public void setFilePermissions(String permissions) {
+		this.config.setFilePermissions(permissions);
+	}
+
 }
